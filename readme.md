@@ -4,6 +4,7 @@
 
 - Ansible installed on your local machine (e.g., macOS or Linux)
 - Remote Ubuntu server accessible via SSH
+- Remote user: gevorg
 
 ---
 
