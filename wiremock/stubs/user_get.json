@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathTemplate": "/user/get/{id}"
+  },
+  "response": {
+    "status": 200,
+    "body": "{ \"name\": \"Test user\", \"score\": 87 }"
+  }
+}

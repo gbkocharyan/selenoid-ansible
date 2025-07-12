@@ -1,5 +1,13 @@
 services:
 
+  wiremock:
+    image: wiremock/wiremock:3.13.1
+    hostname: wiremock
+    volumes:
+      - ./wiremock/stubs:/home/wiremock/mappings
+    networks:
+      - selenoid_net1
+
   selenoid1:
     image: aerokube/selenoid:1.11.3
     container_name: selenoid1
@@ -64,6 +72,7 @@ services:
     depends_on:
       - ggr
       - selenoid-ui
+      - wiremock
     ports:
       - 80:80
     volumes:
