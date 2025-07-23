@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/soap/userQuery"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8"
+    },
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:usr=\"http://example.com/user\">\n  <soapenv:Body>\n    <usr:getUserResponse>\n      <usr:name>Test user</usr:name>\n      <usr:score>78</usr:score>\n    </usr:getUserResponse>\n  </soapenv:Body>\n</soapenv:Envelope>"
+  }
+}
