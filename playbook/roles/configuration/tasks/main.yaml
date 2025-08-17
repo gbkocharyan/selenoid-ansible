@@ -1,0 +1,27 @@
+- name: Copy grid-router quota xml file
+  template:
+    src: gevorg.xml.j2
+    dest: /home/{{ username }}/grid-router/quota/gevorg.xml
+
+- name: Copy grid-router users password
+  template:
+    src: users.htpasswd.j2
+    dest: /home/{{ username }}/grid-router/users.htpasswd
+
+- name: Create browsers.json file
+  template:
+    src: browsers.json.j2
+    dest: /home/{{ username }}/grid-router/browsers.json
+  vars:
+    chrome_version: "{{ browsers_versions.chrome }}"
+    firefox_version: "{{ browsers_versions.firefox }}"
+
+- name: Copy nginx selenoid.conf file to remote server
+  template:
+    src: selenoid.conf.j2
+    dest: /home/{{ username }}/nginx/selenoid.conf
+
+- name: Copy docker-compose.yml template to remote server
+  template:
+    src: docker-compose.yml.j2
+    dest: /home/{{ username }}/docker-compose.yml

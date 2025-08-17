@@ -4,10 +4,12 @@
 
   vars:
     username: gevorg
-    chrome_versions:
-      - "128.0"
-      - "127.0"
+    browsers_versions:
+      chrome: "128.0"
+      firefox: "122.0"
 
   roles:
+    - wiremock_files
+    - configuration
     - docker_install
     - docker_compose

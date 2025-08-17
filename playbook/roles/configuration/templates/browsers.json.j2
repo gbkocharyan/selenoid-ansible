@@ -1,0 +1,23 @@
+{
+  "chrome": {
+    "default": "{{ chrome_version }}",
+    "versions": {
+      "{{ chrome_version }}": {
+        "image": "selenoid/chrome:{{ chrome_version }}",
+        "port": "4444",
+        "path": "/"
+      }
+    }
+  },
+  "firefox": {
+    "default": "{{ firefox_version }}",
+    "versions": {
+      "{{ firefox_version }}": {
+        "image": "selenoid/firefox:{{ firefox_version }}",
+        "port": "4444",
+        "path": "/wd/hub"
+      }
+    }
+  }
+}
+

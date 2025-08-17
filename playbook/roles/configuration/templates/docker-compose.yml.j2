@@ -1,10 +1,70 @@
+version: "3.9"
 services:
+  registry:
+    image: registry:latest
+    restart: always
+    ports:
+      - 5005:5005
+    volumes:
+      - /{{ username }}/jenkins/registry:/var/lib/registry
+    hostname: registry
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5005
+    networks:
+      - selenoid_net1
+
+  jenkins:
+    image: jenkins/jenkins:2.522-jdk21
+    hostname: jenkins
+    privileged: true
+    restart: always
+    depends_on:
+      - registry
+    environment:
+      - JAVA_OPTS=-Dhudson.model.DownloadService.noSignatureCheck=true
+      - DOCKER_OPTS=-H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - JENKINS_OPTS=--prefix=/jenkins
+    volumes:
+      - /{{ username }}/jenkins/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - selenoid_net1
+
+  android-container:
+    image: butomo1989/docker-android-x86-7.1.1
+    container_name: android-container
+    privileged: true
+    ports:
+      - "6080:6080"
+      - "5554:5554"
+      - "5555:5555"
+      - "4723:4723"
+    environment:
+      - WEB_VNC=true
+      - APPIUM=true
+    volumes:
+      - /home/{{ username }}/appium/apk/andy.apk:/root/tmp/andy.apk
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_placeholder
+      MYSQL_DATABASE: project_database
+      MYSQL_USER: project_user
+      MYSQL_PASSWORD: user_password_placeholder
+    volumes:
+      - db_data:/var/lib/mysql
 
   wiremock:
     image: wiremock/wiremock:3.13.1
     hostname: wiremock
     volumes:
-      - ./wiremock/stubs:/home/wiremock/mappings
+      - /home/{{ username }}/wiremock/stubs:/home/wiremock/mappings
     networks:
       - selenoid_net1
 
@@ -68,7 +128,6 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: nginx
     depends_on:
       - ggr
       - selenoid-ui
@@ -76,12 +135,16 @@ services:
     ports:
       - 80:80
     volumes:
-      - /home/{{ username }}/selenoid/nginx/selenoid.conf:/etc/nginx/conf.d/default.conf
+      - /home/{{ username }}/nginx/selenoid.conf:/etc/nginx/conf.d/default.conf
     networks:
       - selenoid_net1
+volumes:
+  db_data:
+    driver: local
 
 networks:
   selenoid_net1:
     name: selenoid_net1
   selenoid_net2:
     name: selenoid_net2
+
