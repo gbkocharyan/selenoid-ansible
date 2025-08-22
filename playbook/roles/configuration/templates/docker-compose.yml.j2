@@ -18,6 +18,7 @@ services:
     hostname: jenkins
     privileged: true
     restart: always
+    user: root
     depends_on:
       - registry
     environment:

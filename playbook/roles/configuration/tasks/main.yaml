@@ -1,3 +1,12 @@
+---
+- name: Ensure grid-router quota directory exists
+  file:
+    path: "/home/{{ username }}/grid-router/quota"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+
 - name: Copy grid-router quota xml file
   template:
     src: gevorg.xml.j2
@@ -15,6 +24,14 @@
   vars:
     chrome_version: "{{ browsers_versions.chrome }}"
     firefox_version: "{{ browsers_versions.firefox }}"
+
+- name: Ensure nginx directory exists
+  file:
+    path: "/home/{{ username }}/nginx"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
 
 - name: Copy nginx selenoid.conf file to remote server
   template:

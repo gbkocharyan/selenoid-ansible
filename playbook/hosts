@@ -1,2 +1,2 @@
 [server]
-45.132.17.22 ansible_user=gevorg ansible_ssh_private_key_file=~/.ssh/selenoid_ansible_key
+45.132.17.22
