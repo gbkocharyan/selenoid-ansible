@@ -1,4 +1,58 @@
 ---
+- name: Ensure Jenkins base directory exists
+  file:
+    path: "/home/{{ username }}/jenkins"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+
+- name: Ensure Jenkins jobs directory exists
+  file:
+    path: "/home/{{ username }}/jenkins/jobs"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+
+- name: Ensure Jenkins slaves directory exists
+  file:
+    path: "/home/{{ username }}/jenkins/slaves"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+
+- name: Copy jenkins job dockerfile.maven
+  template:
+    src: jenkins/Dockerfile.maven.j2
+    dest: /home/{{ username }}/jenkins/slaves/Dockerfile.maven
+
+- name: Copy jenkins upload_jobs file
+  template:
+    src: jenkins/upload_jobs.yaml.j2
+    dest: /home/{{ username }}/jenkins/jobs/upload_jobs.yaml
+
+- name: Copy jenkins job project file
+  template:
+    src: jenkins/project.yaml.j2
+    dest: /home/{{ username }}/jenkins/jobs/project.yaml
+
+- name: Copy jenkins job global file
+  template:
+    src: jenkins/global.yaml.j2
+    dest: /home/{{ username }}/jenkins/jobs/global.yaml
+
+- name: Copy jenkins job view file
+  template:
+    src: jenkins/view.yaml.j2
+    dest: /home/{{ username }}/jenkins/jobs/view.yaml
+
+- name: Copy jenkins job uploader. file
+  template:
+    src: jenkins/uploader.ini.j2
+    dest: /home/{{ username }}/jenkins/uploader.ini
+
 - name: Ensure grid-router quota directory exists
   file:
     path: "/home/{{ username }}/grid-router/quota"
